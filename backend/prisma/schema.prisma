@@ -1,0 +1,85 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum CollaboratorRole {
+  EDITOR
+  VIEWER
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  role      Role     @default(USER) 
+  createdAt DateTime @default(now())
+
+  notes          Note[]             @relation("OwnerNotes")
+  collaborations NoteCollaborator[]
+  activities     ActivityLog[]
+}
+
+model Note {
+  id        String   @id @default(uuid())
+  title     String
+  content   String
+  ownerId   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  owner         User               @relation("OwnerNotes", fields: [ownerId], references: [id])
+  collaborators NoteCollaborator[]
+  activities    ActivityLog[]
+  shareLinks    ShareLink[]
+}
+
+model NoteCollaborator {
+  id     String           @id @default(uuid())
+  noteId String
+  userId String
+  role   CollaboratorRole
+
+  note Note @relation(fields: [noteId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([noteId, userId])
+}
+
+model ActivityLog {
+  id        String   @id @default(uuid())
+  action    String
+  userId    String?
+  noteId    String
+  createdAt DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id])
+  note Note  @relation(fields: [noteId], references: [id], onDelete: Cascade)
+}
+
+model ShareLink {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  noteId    String
+  createdAt DateTime @default(now())
+
+  note Note @relation(fields: [noteId], references: [id], onDelete: Cascade)
+}
