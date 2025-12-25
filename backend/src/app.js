@@ -11,7 +11,12 @@ const app = express();
 app.use(
   cors({
     // origin: "*",
-    origin: "http://localhost:5173",
+  origin: [
+    "http://localhost:3000",
+    "http://localhost:5173",
+    "https://endpoint-notes.vercel.app",
+    "https://www.endpoint-notes.vercel.app"
+  ],
     credentials: true,
   })
 );
