@@ -4,7 +4,8 @@ import { useAuth } from "../hooks/useAuth";
 
 export const SocketContext = createContext(null);
 
-const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || "http://localhost:4000";
+const SOCKET_URL =
+  import.meta.env.VITE_SOCKET_URL || "https://enpointe-notes.vercel.app";
 
 export const SocketProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
