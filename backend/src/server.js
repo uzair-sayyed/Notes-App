@@ -17,6 +17,8 @@ const io = new Server(server, {
       "http://localhost:5173",
       "https://endpoint-notes.vercel.app",
       "https://www.endpoint-notes.vercel.app",
+      "https://enpointe-notes.vercel.app",
+      "https://www.enpointe-notes.vercel.app"
     ],
      credentials: true,
       methods: ["GET", "POST"],
