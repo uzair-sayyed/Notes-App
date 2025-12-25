@@ -18,6 +18,8 @@ const io = new Server(server, {
       "https://endpoint-notes.vercel.app",
       "https://www.endpoint-notes.vercel.app",
     ],
+     credentials: true,
+      methods: ["GET", "POST"],
   },
 });
 

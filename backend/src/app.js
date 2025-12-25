@@ -11,12 +11,14 @@ const app = express();
 app.use(
   cors({
     // origin: "*",
-  origin: [
-    "http://localhost:3000",
-    "http://localhost:5173",
-    "https://endpoint-notes.vercel.app",
-    "https://www.endpoint-notes.vercel.app"
-  ],
+    origin: [
+      "http://localhost:3000",
+      "http://localhost:5173",
+      "https://endpoint-notes.vercel.app",
+      "https://www.endpoint-notes.vercel.app",
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
 );
@@ -32,6 +34,5 @@ app.use("/api/auth", authRoutes);
 app.use("/api/notes", notesRoutes);
 app.use("/api/collaborators", collaboratorRoutes);
 app.use("/api/share", linkshareRoutes);
-
 
 export default app;
